@@ -1,0 +1,12 @@
+[Unit]
+Description=Servicio de Monitoreo de Cambios en Directorios
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=
+WorkingDirectory=/ruta/al/directorio/del/script
+
+[Install]
+WantedBy=multi-user.target
+
