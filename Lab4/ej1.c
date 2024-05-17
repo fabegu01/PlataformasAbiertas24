@@ -2,8 +2,10 @@
 
 // Declaración de funciones
 void BuscarValor(int valores[], int cantidad, int valor);
+void busquedaBinaria(int array[], int cantidad , int valor);
+void busquedaRecursiva(int array[], int inicio, int fin, int valor);
 
-
+//BuscarValor normalmente
 void BuscarValor(int valores[], int cantidad, int valor ) {
     int posicion = -1;
         for (int i = 0; i < cantidad; i++) {
@@ -23,8 +25,8 @@ void BuscarValor(int valores[], int cantidad, int valor ) {
 
     
 } 
-
-int busquedaBinaria(int array[], int cantidad , int valor) {
+// Buscar valor con Binarios
+void busquedaBinaria(int array[], int cantidad , int valor) {
     int inicio = 0;
     int fin = cantidad - 1;
     while (inicio <= fin) {
@@ -43,8 +45,8 @@ int busquedaBinaria(int array[], int cantidad , int valor) {
     return -1; 
 }
 
-
-int busquedaRecursiva(int array[], int inicio, int fin, int valor) {
+// Busqueda de manera recursiva 
+void busquedaRecursiva(int array[], int inicio, int fin, int valor) {
     if (inicio > fin) {
         return -1; // El valor no se encontró en el arreglo
     }
