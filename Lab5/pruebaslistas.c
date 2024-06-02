@@ -14,12 +14,31 @@ Libro *listalibro(Libro *lista){
     return lista;
 }
 
+Libro *agregarlibro(Libro *lista, char *nombre){
 
-int main ()
-{    
+    Libro *agregarLibro;
+    agregarLibro = malloc(sizeof(Libro));   
+    agregarLibro->nombre = nombre;
+    agregarLibro->siguiente = NULL;
+
+    if (lista == NULL) {
+
+        lista = agregarLibro;
+    }
+    else{
+
+    }
+    return lista;
+    
+   
+}
+
+int main(){
+
+  
 Libro *lista = listalibro(lista);
-
-printf( "%p", lista);
+lista = agregarlibro(lista, "hola");
+printf( "%s\n",lista->nombre);
 
 return 0;
 
