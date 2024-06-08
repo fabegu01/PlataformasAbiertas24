@@ -1,77 +1,131 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-typedef struct elemento{
+typedef struct elemento {
     int dato;
-    struct elemento *siguiente
-}Nodo;
+    struct elemento *siguiente;
+} Nodo;
 
-
-Nodo *crearlista(){
+Nodo *crearLista() {
     Nodo *lista = NULL;
     return lista;
 }
 
-
-Nodo *CrearNodo( int dato){
-
-    Nodo *nuevoNodo;
-    nuevoNodo = malloc(sizeof(Nodo));
+Nodo *crearNodo(int dato) {
+    Nodo *nuevoNodo = malloc(sizeof(Nodo));
+    if (nuevoNodo == NULL) {
+        printf("Error al asignar memoria\n");
+        exit(1);
+    }
     nuevoNodo->dato = dato;
     nuevoNodo->siguiente = NULL;
     return nuevoNodo;
+}
 
-    }   
-
-void *agregarNodoFinal(Nodo **lista, int dato){//agregar nodo al final
-
-    Nodo *auxiliar;
-    auxiliar = *lista;
-    Nodo *nuevoNodo = CrearNodo(dato);
-    if (lista == NULL){//significa que la lista esta vacia entonces
+void agregarNodoFinal(Nodo **lista, int dato) {
+    Nodo *nuevoNodo = crearNodo(dato);
+    if (*lista == NULL) {
         *lista = nuevoNodo;
-    }
-    else{// la lista no esta vacia
-        while(auxiliar->siguiente != NULL);//mientras no encontremos un espacio vacio pasamos a la siguiente variable
-        auxiliar= auxiliar->siguiente;
-    }// si se sale del while es porque encontro un espacio NULL
-        auxiliar->siguiente=nuevoNodo;
-
-}
-
-void *agregarNodoinicio( Nodo **lista, int dato){//agregar nodo al principio
-
-    Nodo *nuevoNodo =CrearNodo(dato), *actual, *anterior;//creamos un nuevo nodo con la funcion crear nodo, y dos variables que nos ayudaran
-    actual = *lista;//varaible que apunta al primer valor de la lista de nodos
-    anterior = NULL;//valor anterior que apunta a nulo
-       if (actual == NULL){//significa que la lista esta vacia entonces
-        CrearNodo(dato);
+    } else {
+        Nodo *auxiliar = *lista;
+        while (auxiliar->siguiente != NULL) {
+            auxiliar = auxiliar->siguiente;
         }
-        else{//la lista no esta vacia 
-        anterior = nuevoNodo;//ahora la variable anterior sera el nuevo nodo y el principio de la lista
-        anterior->siguiente=actual;//actualizamos el valor al que va a apuntar el nuevo inicio que es hacia toda la lista que habia
-        *lista = anterior;
-        }
-
-}
-void *Nodoagregar(Nodo **lista,int dato, Nodo *anterior ){
-
-    Nodo *nuevoNodo = CrearNodo(dato);
-    if(*lista==NULL || anterior == NULL){
-        agregarNodoinicio(lista , dato); 
-
+        auxiliar->siguiente = nuevoNodo;
     }
-    else{
-        nuevoNodo->siguiente=anterior->siguiente;
-        anterior->siguiente=nuevoNodo;
-    }
-
 }
 
+void agregarNodoInicio(Nodo **lista, int dato) {
+    Nodo *nuevoNodo = crearNodo(dato);
+    nuevoNodo->siguiente = *lista;
+    *lista = nuevoNodo;
+}
 
-     
+void agregarNodo(Nodo **lista, int dato, Nodo *anterior) {
+    if (*lista == NULL || anterior == NULL) {
+        agregarNodoInicio(lista, dato);
+    } else {
+        Nodo *nuevoNodo = crearNodo(dato);
+        nuevoNodo->siguiente = anterior->siguiente;
+        anterior->siguiente = nuevoNodo;
+    }
+}
+
+void imprimirLista(Nodo *lista) {
+    Nodo *actual = lista;
+    while (actual != NULL) {
+        printf("%d\n", actual->dato);
+        actual = actual->siguiente;
+    }
+}
+
+void eliminarNodo(Nodo **lista, Nodo *anterior, Nodo *dato) {
+    if (*lista == NULL) {
+        printf("La lista está vacía, no hay nada que eliminar\n");
+        return;
+    }
+
+    if (anterior == NULL) {  // El nodo a eliminar es el primero
+        *lista = dato->siguiente;
+    } else {
+        anterior->siguiente = dato->siguiente;
+    }
+    free(dato);
+}
+
+int main() {
+    Nodo *lista = crearLista();
+
+    // Agregar nodos al inicio
+    printf("Agregando nodos al inicio:\n");
+    agregarNodoInicio(&lista, 3);
+    agregarNodoInicio(&lista, 2);
+
+
+    // Imprimir lista después de agregar al inicio
+    printf("Lista después de agregar nodos al inicio:\n");
+    imprimirLista(lista);
+    printf("\n");
+
+    // Agregar nodos al final
+    printf("Agregando nodos al final:\n");
+    agregarNodoFinal(&lista, 4);
+    agregarNodoFinal(&lista, 5);
+    
+
+    // Imprimir lista después de agregar al final
+    printf("Lista después de agregar nodos al final:\n");
+    imprimirLista(lista);
+    printf("\n");
+
+    // Agregar un nodo después del primer nodo
+    printf("Agregando nodo después del primer nodo (con valor 10):\n");
+    agregarNodo(&lista, 10, lista);
+
+    // Imprimir lista después de agregar nodo en posición específica
+    printf("Lista después de agregar nodo después del primer nodo:\n");
+    imprimirLista(lista);
+    printf("\n");
+
+    // Eliminar un nodo
+    printf("Eliminando el segundo nodo (valor original 2):\n");
+    eliminarNodo(&lista, lista, lista->siguiente);
+
+    // Imprimir lista después de eliminar un nodo
+    printf("Lista después de eliminar un nodo:\n");
+    imprimirLista(lista);
+    printf("\n");
+
+    // Liberar memoria de la lista restante
+    while (lista != NULL) {
+        Nodo *temp = lista;
+        lista = lista->siguiente;
+        free(temp);
+    }
+
+    return 0;
+}
+
 
 
 
